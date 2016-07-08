@@ -2,6 +2,8 @@
 import os
 import jinja2
 import webapp2
+import datetime
+from time import gmtime, strftime
 
 
 template_dir = os.path.join(os.path.dirname(__file__), "templates")
@@ -29,7 +31,18 @@ class BaseHandler(webapp2.RequestHandler):
 
 class MainHandler(BaseHandler):
     def get(self):
-        return self.render_template("hello.html")
+
+        datetimeformat = datetime.datetime.utcnow()
+
+        datetimeformat2 = strftime("%Y-%m-%d %H:%M:%S", gmtime())
+
+        enviornment = dict()
+
+        enviornment['datetimeformat'] = datetimeformat
+        enviornment['datetimeformat2'] = datetimeformat2
+
+        return self.render_template("main.html", params=enviornment)
+
 
 app = webapp2.WSGIApplication([
     webapp2.Route('/', MainHandler),
